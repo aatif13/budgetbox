@@ -1,36 +1,106 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+📦 BudgetBox — Offline-First Personal Budget Manager
 
-## Getting Started
+BudgetBox is a local-first monthly budgeting application that works even when the internet disconnects.
+Every keystroke is automatically saved into IndexedDB and remains persistent across refreshes, tab close, and offline mode.
+When connection returns, users can sync their stored local data to the server.
 
-First, run the development server:
+Built for assignment evaluation — fully aligned with PDF requirements.
 
-```bash
+🔑 Demo Login (Required by PDF)
+Field	Value
+Email	hire-me@anshumat.org
+
+Password	HireMe@2025!
+
+Dashboard is not accessible without login.
+
+✨ Features
+Feature	Status
+Fully works offline	✔ IndexedDB persistence
+Auto-saves every keystroke	✔ No save button needed
+Dashboard & analytics	✔ Burn rate + savings graph
+Expense visualization	✔ Pie chart using Recharts/Chart.js
+Manual + Auto Sync	✔ Sync to backend when online
+Protected routes	✔ Dashboard restricted until login
+Local-first design	✔ Low-latency + durable data model
+🏗 Tech Stack
+Layer	Technology
+Frontend	Next.js 15 • React • TypeScript
+Styling	TailwindCSS • shadcn/ui
+State	Zustand + Persist + LocalForage
+Local DB	IndexedDB
+Backend	Node.js/FastAPI (REST API)
+Database	PostgreSQL
+Deployment	Vercel (client) + Render/Railway (server)
+🚀 Getting Started (Local)
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Visit → http://localhost:3000/login
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Enter demo credentials → redirected to dashboard.
 
-## Learn More
+🔥 How to Test Offline Mode (Important for review)
 
-To learn more about Next.js, take a look at the following resources:
+Login using demo account
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Open dashboard
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+DevTools → Network tab → toggle Offline
 
-## Deploy on Vercel
+Change budget values — they must persist instantly
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Refresh page → data should remain
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Turn internet ON → click Sync (or auto-sync triggers)
+
+This validates offline-first architecture.
+
+🔥 Backend Endpoints (Mandatory)
+
+| Method | Route | Purpose |
+|---|---|
+| POST /budget/sync | Push local IndexedDB data to server |
+| GET /budget/latest | Retrieve server-stored latest budget |
+
+Example sync request:
+
+POST /budget/sync
+{
+  "income": 60000,
+  "expenses": {
+    "food": 12000,
+    "transport": 4000,
+    "bills": 8000,
+    "subscriptions": 3000,
+    "misc": 2000
+  }
+}
+
+📁 Folder Structure
+budgetbox/
+ ├─ frontend/
+ │  ├─ app/login/page.tsx
+ │  ├─ app/dashboard/page.tsx
+ │  ├─ components/ui/*
+ │  ├─ store/budgetStore.ts
+ │  └─ public/assets
+ ├─ backend/
+ │  ├─ routes/
+ │  ├─ controllers/
+ │  └─ database.sql
+ ├─ docs/
+ │  ├─ demo-screenshots/
+ │  └─ demo.gif
+ ├─ architecture.png
+ └─ README.md ← YOU ARE HERE
+
+
+
+
+Notes for Reviewer
+
+BudgetBox is built with a local-first architecture where data never gets lost.
+All inputs auto-persist in IndexedDB, enabling complete offline usage.
+A dashboard provides live expense analytics, burn rate, trends & pie chart visualization.
